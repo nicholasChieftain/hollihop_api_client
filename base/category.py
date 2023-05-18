@@ -1,8 +1,8 @@
-import pdb
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..api import AbstractAPI
+    from api import AbstractAPI
+
 
 class BaseCategory:
     def __init__(self, api: 'AbstractAPI'):
@@ -13,7 +13,7 @@ class BaseCategory:
         handled_parameters = parameters.copy()
 
         handled_parameters.pop('self')
-        
+
         for key, value in parameters.items():
             if value is None:
                 handled_parameters.pop(key)

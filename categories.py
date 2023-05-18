@@ -1,4 +1,4 @@
-from .methods import (
+from methods import (
         locations,
         offices,
         ed_units,
@@ -8,7 +8,7 @@ from .methods import (
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .api import AbstractAPI
+    from api import AbstractAPI
 
 
 class APICategories:

@@ -4,7 +4,7 @@ from typing import NoReturn, TYPE_CHECKING
 if TYPE_CHECKING:
     from requests import Response
 
-from ..categories import APICategories
+from categories import APICategories
 
 
 class AbstractAPI(ABC, APICategories):
@@ -20,7 +20,7 @@ class AbstractAPI(ABC, APICategories):
     @abstractmethod
     def _validate_response(
             self,
-            response: 'Response'
+            response: "Response"
             ) -> (None | dict) | NoReturn:
         pass
 

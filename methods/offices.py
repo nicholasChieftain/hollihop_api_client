@@ -1,29 +1,31 @@
-from ..base import BaseCategory
+from base import BaseCategory
 from typing import TYPE_CHECKING, Any
 
 from dataclasses import dataclass, field
 from datetime import timezone
 
+from tools import dict_to_camel, dict_to_snake
+
 if TYPE_CHECKING:
-    from ..api import AbstractAPI
+    from api import AbstractAPI
 
 
 @dataclass
 class Office:
-    Id: None | int = None
-    Name: None | str = None
-    Location: None | str = None
-    Address: None | str = None
-    EMail: None | str = None
-    Phone: None | str = None
-    NoClassrooms: None | bool = None
-    TimeZone: None | timezone = None
-    License: None | str = None
+    id: None | int = None
+    name: None | str = None
+    location: None | str = None
+    address: None | str = None
+    email: None | str = None
+    phone: None | str = None
+    no_classrooms: None | bool = None
+    time_zone: None | timezone = None
+    license: None | str = None
 
 
 @dataclass 
 class Offices:
-    Offices: list[Office] = field(default_factory=list)
+    offices: list[Office] = field(default_factory=list)
 
 
 class OfficesCategory(BaseCategory):
@@ -38,7 +40,7 @@ class OfficesCategory(BaseCategory):
             name: None | str = None,
             license: None | str = None
             ) -> list[Office]:
-        data = self.handle_parameters(locals())
+        data = dict_to_camel(self.handle_parameters(locals()))
 
         response = self.api.request(
                 method='GetOffices',
@@ -46,15 +48,17 @@ class OfficesCategory(BaseCategory):
                 data=data
                 )
 
-        return [Office(**_) for _ in Offices(**response).Offices]
+        response = dict_to_snake(response)
+
+        return [Office(**_) for _ in Offices(**response).offices]
     
     def get_all_offices_name(self) -> list[str]:
         offices = self.get_offices()
-        return [office.Name for office in offices]
+        return [office.name for office in offices]
 
     def get_all_offices_id(self) -> list[int]:
         offices = self.get_offices()
-        return [office.Id for office in offices]
+        return [office.id for office in offices]
 
 
 __all__ = ['OfficesCategory']

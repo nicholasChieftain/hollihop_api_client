@@ -1,50 +1,72 @@
-from ..base import BaseCategory
+from base import BaseCategory
 from typing import TYPE_CHECKING, Any
 
 from dataclasses import dataclass, field
-from datetime import datetime, time, date, timedelta
+from datetime import datetime
+
+from tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from ..api import AbstractAPI
+    from api import AbstractAPI
 
-    
+
+@dataclass
+class Agent:
+    first_name: str | None = None
+    last_name: str | None = None
+    is_customer: bool | None = None
+    use_email_by_system: bool | None = None
+    use_mobile_by_system: bool | None = None
+
+
+@dataclass
+class ExtraField:
+    name: str | None = None
+    value: str | None = None
+
+
 @dataclass
 class Lead:
-    Id: int | None
-    Created: datetime | None = None
-    Updated: datetime | None = None
-    FirstName: str | None = None
-    LastName: str | None = None
-    MiddleName: str | None = None
-    AddressDate: datetime | None = None
-    AdSource: str | None = None
-    StatusId: str | None = None
-    Status: str | None = None
-    Birthday: datetime | None = None
-    Phone: str | None = None
-    Mobile: str | None = None
-    UseMobileBySystem: bool | None = None
-    EMail: str | None = None
-    UseEMailBySystem: bool | None = None
-    Maturity: str | None = None
-    LearningType: str | None = None
-    Discipline: str | None = None
-    Level: str | None = None
-    Agents: list | None = None
-    OfficesAndCompanies: list | None = None
-    Assignees: list | None = None
-    ExtraFields: list | None = None
-    StudentClientId: int | None = None
-    Name: str = field(init=False)
-    
+    id: int | None
+    created: datetime | None = None
+    updated: datetime | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    middle_name: str | None = None
+    address_date: datetime | None = None
+    ad_source: str | None = None
+    status_id: str | None = None
+    status: str | None = None
+    birthday: datetime | None = None
+    phone: str | None = None
+    mobile: str | None = None
+    use_mobile_by_system: bool | None = None
+    email: str | None = None
+    use_email_by_system: bool | None = None
+    maturity: str | None = None
+    learning_type: str | None = None
+    discipline: str | None = None
+    level: str | None = None
+    agents: list[Agent] | None = None
+    offices_and_companies: list | None = None
+    assignees: list | None = None
+    extra_fields: list | None = None
+    student_client_id: int | None = None
+    name: str = field(init=False)
+
     def __post_init__(self):
-        self.Name = self.LastName + ' ' + self.FirstName + ' ' + self.MiddleName 
+        self.name = ' '.join(filter(lambda str_obj: str_obj, [
+                             self.last_name, self.first_name, self.middle_name]))
+        if self.agents:
+            self.agents = [Agent(**_) for _ in self.agents]
+        if self.extra_fields:
+            self.extra_fields = [ExtraField(**_) for _ in self.extra_fields]
 
 
-@dataclass 
+@dataclass
 class Leads:
-    Leads: None | list[Lead] = field(default_factory=list)
-    Now: None | datetime = None
+    leads: None | list[Lead] = field(default_factory=list)
+    now: None | datetime = None
 
 
 class LeadsCategory(BaseCategory):
@@ -56,24 +78,25 @@ class LeadsCategory(BaseCategory):
             self,
             id: None | int = None,
             attached: None | bool = None,
-            studentClientId: None | int = None
-            ) -> list[Lead]:
-        data = self.handle_parameters(locals())
+            student_client_id: None | int = None
+    ) -> list[Lead]:
+        data = dict_to_camel(self.handle_parameters(locals()))
 
         response = self.api.request(
-                method='GetLeads',
-                http_method='GET',
-                data=data
-                )
+            method='GetLeads',
+            http_method='GET',
+            data=data
+        )
 
-        raw_leads = [Lead(**_) for _ in Leads(**response).Leads]
-        
+        response = dict_to_snake(response)
+
+        raw_leads = [Lead(**_) for _ in Leads(**response).leads]
+
         return raw_leads
-    
+
     def get_all_leads_id(self, **kwargs) -> list[int]:
         leads = self.get_leads(**kwargs)
-        return [lead.StudentClientId for lead in leads]
+        return [lead.student_client_id for lead in leads]
 
 
 __all__ = ['LeadsCategory']
-        

@@ -1,22 +1,23 @@
-from ..base import BaseCategory
+from base import BaseCategory
 from typing import TYPE_CHECKING, Any
 
 from dataclasses import dataclass, field
-from functools import lru_cache
+
+from tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from ..api import AbstractAPI
+    from api import AbstractAPI
 
 
 @dataclass
 class Location:
-    Id: None | int
-    Name: None | str
+    id: None | int
+    name: None | str
 
 
 @dataclass 
 class Locations:
-    Locations: list[Location] = field(default_factory=list)
+    locations: list[Location] = field(default_factory=list)
 
 
 class LocationsCategory(BaseCategory):
@@ -29,7 +30,7 @@ class LocationsCategory(BaseCategory):
             id: None | int = None,
             name: None | str = None
             ) -> list[Location]:
-        data = self.handle_parameters(locals())
+        data = dict_to_camel(self.handle_parameters(locals()))
 
         response = self.api.request(
                 method='GetLocations',
@@ -37,15 +38,17 @@ class LocationsCategory(BaseCategory):
                 data=data
                 )
 
-        return [Location(**_) for _ in Locations(**response).Locations]
+        response = dict_to_snake(response)
+
+        return [Location(**_) for _ in Locations(**response).locations]
     
     def get_all_locations_name(self) -> list[str]:
         locations = self.get_locations()
-        return [location.Name for location in locations]
+        return [location.name for location in locations]
 
     def get_all_locations_id(self) -> list[int]:
         locations = self.get_locations()
-        return [location.Id for location in locations]
+        return [location.id for location in locations]
 
 
 __all__ = ['LocationsCategory']

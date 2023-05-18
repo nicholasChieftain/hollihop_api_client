@@ -13,9 +13,9 @@ pip install hollihop-api-client
 ### Инициализация
 
 ```python
-from hollihop_api_client import hhAPI
+from hollihop_api_client import HolliHopAPI
 
-hh_api = hhAPI(HH_DOMAIN, HH_COMMON_API_KEY)
+hh_api = HolliHopAPI(HH_DOMAIN, HH_COMMON_API_KEY)
 ```
 
 Обратите внимание, что ключи нужно получать из переменных среды:

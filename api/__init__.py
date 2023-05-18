@@ -1,4 +1,4 @@
 from .abc import AbstractAPI
-from .api import hhAPI, hhAPIError
+from .api import HolliHopAPI, HolliHopAPIError
 
-__all__ = ['AbstractAPI', 'hhAPI', 'hhAPIError']
+__all__ = ['AbstractAPI', 'HolliHopAPI', 'HolliHopAPIError']

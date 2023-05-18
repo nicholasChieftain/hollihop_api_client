@@ -1,12 +1,12 @@
-from typing import NoReturn
+from typing import NoReturn, TYPE_CHECKING
 
 from requests import Response, Session, get
 
 from .abc import AbstractAPI
 
 
-class hhAPIError(Exception):
-    _respone_not_ok = '''Запрос к {url} не выполнен.
+class HolliHopAPIError(Exception):
+    _response_not_ok = '''Запрос к {url} не выполнен.
     Статус код {status_code}.
     {error_message}'''
     _other_errors = '''{error_message}'''
@@ -14,7 +14,7 @@ class hhAPIError(Exception):
     def __init__(
             self,
             error_message: str,
-            status_code: None | str = None,
+            status_code: None | int = None,
             url: None | str = None
             ):
         self._status_code = status_code
@@ -23,18 +23,18 @@ class hhAPIError(Exception):
 
     def __str__(self) -> str:
         if self._status_code is None:
-            return self._others_errors.format(
+            return self._other_errors.format(
                     error_message=self._error_message
                     )
         else:
-            return self._respone_not_ok.format(
+            return self._response_not_ok.format(
                     url=self._url,
                     status_code=self._status_code,
                     error_message=self._error_message
                 )
 
 
-class hhAPI(AbstractAPI):
+class HolliHopAPI(AbstractAPI):
     __api_version__ = 'Api/V2/'
 
     def __init__(
@@ -43,11 +43,11 @@ class hhAPI(AbstractAPI):
             api_key: str = None
             ):
         if api_key is None:
-            raise hhAPIError(
+            raise HolliHopAPIError(
                     error_message='Не указан ключ доступа к API'
                     )
         if domain is None:
-            raise hhAPIError(
+            raise HolliHopAPIError(
                     error_message='Не указан домен для доступа к API'
                     )
         self._domain = domain
@@ -69,7 +69,7 @@ class hhAPI(AbstractAPI):
                     url=url,
                     data=data,
                     )
-        #response = get(url=url, data=data)
+
         response = self._validate_response(response)
 
         return response
@@ -81,11 +81,12 @@ class hhAPI(AbstractAPI):
         if response.status_code == 200:
             return response.json()
         else:
-            raise hhAPIError(
+            print(response.json())
+            raise HolliHopAPIError(
                     response.url,
                     response.status_code,
                     'Ошибка выполнения запроса'
                     )
 
 
-__all__ = ['hhAPI', 'hhAPIError']
+__all__ = ['HolliHopAPI', 'HolliHopAPIError']
