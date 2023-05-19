@@ -1,7 +1,6 @@
 from functools import lru_cache
 from typing import Any
 
-
 keyword_tuple = ('False', 'await', 'else', 'import', 'pass',
                  'None', 'break', 'except', 'in', 'raise',
                  'True', 'class', 'finally', 'is', 'return',

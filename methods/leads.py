@@ -1,13 +1,12 @@
-from base import BaseCategory
-from typing import TYPE_CHECKING, Any
-
 from dataclasses import dataclass, field
 from datetime import datetime
+from typing import TYPE_CHECKING, Any
 
-from tools import dict_to_camel, dict_to_snake
+from hollihop_api_client.base import BaseCategory
+from hollihop_api_client.tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from api import AbstractAPI
+    from hollihop_api_client.api import AbstractAPI
 
 
 @dataclass

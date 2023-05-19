@@ -1,15 +1,12 @@
-from pprint import pprint
-
-from base import BaseCategory
-from typing import TYPE_CHECKING, Any, List
-
 from dataclasses import dataclass, field
 from datetime import datetime, time
+from typing import TYPE_CHECKING, Any, List
 
-from tools import dict_to_camel, dict_to_snake
+from hollihop_api_client.base import BaseCategory
+from hollihop_api_client.tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from api import AbstractAPI
+    from hollihop_api_client.api import AbstractAPI
 
 
 @dataclass
@@ -137,13 +134,15 @@ class EdUnit:
 
     def __post_init__(self):
         if not self.schedule_items is None:
-            self.schedule_items = [ScheduleItem(**_) for _ in self.schedule_items]
+            self.schedule_items = [ScheduleItem(
+                **_) for _ in self.schedule_items]
         if not self.days is None:
             self.days = [Day(**_) for _ in self.days]
         if not self.fiscal_info is None:
             self.fiscal_info = FiscalInfo(**self.fiscal_info)
         if not self.teacher_prices is None:
-            self.teacher_prices = [TeacherPrice(**_) for _ in self.teacher_prices]
+            self.teacher_prices = [TeacherPrice(
+                **_) for _ in self.teacher_prices]
 
 
 @dataclass(frozen=True)

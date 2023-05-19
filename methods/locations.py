@@ -1,12 +1,11 @@
-from base import BaseCategory
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any
 
-from dataclasses import dataclass, field
-
-from tools import dict_to_camel, dict_to_snake
+from hollihop_api_client.base import BaseCategory
+from hollihop_api_client.tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from api import AbstractAPI
+    from hollihop_api_client.api import AbstractAPI
 
 
 @dataclass
@@ -15,7 +14,7 @@ class Location:
     name: None | str
 
 
-@dataclass 
+@dataclass
 class Locations:
     locations: list[Location] = field(default_factory=list)
 
@@ -29,19 +28,19 @@ class LocationsCategory(BaseCategory):
             self,
             id: None | int = None,
             name: None | str = None
-            ) -> list[Location]:
+    ) -> list[Location]:
         data = dict_to_camel(self.handle_parameters(locals()))
 
         response = self.api.request(
-                method='GetLocations',
-                http_method='GET',
-                data=data
-                )
+            method='GetLocations',
+            http_method='GET',
+            data=data
+        )
 
         response = dict_to_snake(response)
 
         return [Location(**_) for _ in Locations(**response).locations]
-    
+
     def get_all_locations_name(self) -> list[str]:
         locations = self.get_locations()
         return [location.name for location in locations]
@@ -52,4 +51,3 @@ class LocationsCategory(BaseCategory):
 
 
 __all__ = ['LocationsCategory']
-        

@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import NoReturn, TYPE_CHECKING
+from typing import TYPE_CHECKING, NoReturn
 
 if TYPE_CHECKING:
     from requests import Response
 
-from categories import APICategories
+from hollihop_api_client.categories import APICategories
 
 
 class AbstractAPI(ABC, APICategories):
@@ -14,14 +14,14 @@ class AbstractAPI(ABC, APICategories):
             method: str,
             http_method: str = 'GET',
             data: None | dict = None,
-            ) -> None | dict:
+    ) -> None | dict:
         pass
 
     @abstractmethod
     def _validate_response(
             self,
             response: "Response"
-            ) -> (None | dict) | NoReturn:
+    ) -> (None | dict) | NoReturn:
         pass
 
 

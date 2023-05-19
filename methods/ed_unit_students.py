@@ -1,16 +1,15 @@
-from base import BaseCategory
+from dataclasses import dataclass, field
+from datetime import date, datetime, time, timedelta
 from typing import TYPE_CHECKING, Any
+
 import phonenumbers
 
-from dataclasses import dataclass, field
-from datetime import datetime, time, date, timedelta
-
-from methods.ed_units import EdUnit
-
-from tools import dict_to_camel, dict_to_snake
+from hollihop_api_client.base import BaseCategory
+from hollihop_api_client.methods.ed_units import EdUnit
+from hollihop_api_client.tools import dict_to_camel, dict_to_snake
 
 if TYPE_CHECKING:
-    from api import AbstractAPI
+    from hollihop_api_client.api import AbstractAPI
 
 
 def replace_spaces(from_str: str):
