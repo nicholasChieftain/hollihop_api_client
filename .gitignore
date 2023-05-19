@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 tests/
-.DS_STORE
+.DS_Store
+.idea/
