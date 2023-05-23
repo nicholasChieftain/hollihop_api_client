@@ -3,7 +3,8 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 from hollihop_api_client.base import BaseCategory
-from hollihop_api_client.tools import dict_to_camel, dict_to_snake
+from hollihop_api_client.tools import dict_to_camel, dict_to_snake, format_phone
+
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI
@@ -13,9 +14,22 @@ if TYPE_CHECKING:
 class Agent:
     first_name: str | None = None
     last_name: str | None = None
+    middle_name: str | None = None
     is_customer: bool | None = None
+    who_is: str | None = None
+    email: str | None = None
     use_email_by_system: bool | None = None
+    phone: str | None = None
+    mobile: str | None = None
     use_mobile_by_system: bool | None = None
+    job_or_study_place: str | None = None
+    position: str | None = None
+    birthday: datetime | None = None
+    skype: str | None = None
+
+    def __post_init__(self):
+        if not self.phone is None:
+            self.phone = format_phone(self.phone.replace('+', ''))
 
 
 @dataclass
@@ -60,6 +74,10 @@ class Lead:
             self.agents = [Agent(**_) for _ in self.agents]
         if self.extra_fields:
             self.extra_fields = [ExtraField(**_) for _ in self.extra_fields]
+        if not self.mobile is None:
+            self.mobile = format_phone(self.mobile.replace('+', ''))
+        if not self.phone is None:
+            self.phone = format_phone(self.phone.replace('+', ''))
 
 
 @dataclass
@@ -77,7 +95,8 @@ class LeadsCategory(BaseCategory):
             self,
             id: None | int = None,
             attached: None | bool = None,
-            student_client_id: None | int = None
+            student_client_id: None | int = None,
+            office_or_company_id: int | None = None
     ) -> list[Lead]:
         data = dict_to_camel(self.handle_parameters(locals()))
 
