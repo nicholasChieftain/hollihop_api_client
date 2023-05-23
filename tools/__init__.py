@@ -1,5 +1,7 @@
+import phonenumbers
 from functools import lru_cache
 from typing import Any
+import logging
 
 keyword_tuple = ('False', 'await', 'else', 'import', 'pass',
                  'None', 'break', 'except', 'in', 'raise',
@@ -22,9 +24,11 @@ def dict_to_camel(data: dict[Any, Any]) -> dict[Any, Any]:
         if isinstance(v, dict):
             converted[key] = dict_to_camel(v)
         elif isinstance(v, list):
-            converted[key] = [dict_to_camel(x) if isinstance(x, dict) else x for x in v]
+            converted[key] = [dict_to_camel(
+                x) if isinstance(x, dict) else x for x in v]
         elif isinstance(v, tuple):
-            converted[key] = tuple(dict_to_camel(x) if isinstance(x, dict) else x for x in v)
+            converted[key] = tuple(dict_to_camel(
+                x) if isinstance(x, dict) else x for x in v)
         else:
             converted[key] = data[k]
 
@@ -47,9 +51,11 @@ def dict_to_snake(data: dict[Any, Any]) -> dict[Any, Any]:
         if isinstance(v, dict):
             converted[key] = dict_to_snake(v)
         elif isinstance(v, list):
-            converted[key] = [dict_to_snake(x) if isinstance(x, dict) else x for x in v]
+            converted[key] = [dict_to_snake(
+                x) if isinstance(x, dict) else x for x in v]
         elif isinstance(v, tuple):
-            converted[key] = tuple(dict_to_snake(x) if isinstance(x, dict) else x for x in v)
+            converted[key] = tuple(dict_to_snake(
+                x) if isinstance(x, dict) else x for x in v)
         else:
             converted[key] = data[k]
 
@@ -67,9 +73,11 @@ def dict_to_pascal(data: dict[Any, Any]) -> dict[Any, Any]:
         if isinstance(v, dict):
             converted[key] = dict_to_pascal(v)
         elif isinstance(v, list):
-            converted[key] = [dict_to_pascal(x) if isinstance(x, dict) else x for x in v]
+            converted[key] = [dict_to_pascal(
+                x) if isinstance(x, dict) else x for x in v]
         elif isinstance(v, tuple):
-            converted[key] = tuple(dict_to_pascal(x) if isinstance(x, dict) else x for x in v)
+            converted[key] = tuple(dict_to_pascal(
+                x) if isinstance(x, dict) else x for x in v)
         else:
             converted[key] = data[k]
 
@@ -97,3 +105,15 @@ def to_pascal(snake_string: str) -> str:
 
 def _split_snake(snake_string: str) -> list[str]:
     return snake_string.split("_")
+
+
+def format_phone(phone: str) -> str:
+    try:
+        return phonenumbers.format_number(
+            phonenumbers.parse(phone, 'RU'),
+            phonenumbers.PhoneNumberFormat.E164
+        )
+    except Exception as error:
+        logging.error(
+            'Number is not formatted\nError – {error}'.format(error=error))
+        return phone
