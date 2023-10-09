@@ -164,6 +164,19 @@ class EdUnitsCategory(BaseCategory):
     def __init__(self, api: 'AbstractAPI'):
         self.api = api
 
+    def get_ed_units_by_config(self, config):
+        data_dict = config.request_data.dict()
+        data = dict_to_camel(data_dict)
+
+        response = self.api.request(
+            method='GetEdUnits',
+            http_method='GET',
+            data=data
+        )
+
+        response = dict_to_snake(response)
+        return [EdUnit(**_) for _ in EdUnits(**response).ed_units]
+
     def get_ed_units(
             self,
             id: None | int = None,
