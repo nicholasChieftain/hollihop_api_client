@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
-from datetime import datetime, time
-from typing import TYPE_CHECKING, Any, List
+from datetime import datetime, time, date
+from typing import TYPE_CHECKING
 
 from hollihop_api_client.base import BaseCategory
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
@@ -168,12 +168,12 @@ class EdUnitsCategory(BaseCategory):
             self,
             id: None | int = None,
             types: None | str = None,
-            date_from: None | datetime = None,
-            date_to: None | datetime = None,
+            date_from: None | date = None,
+            date_to: None | date = None,
             statuses: None | str = None,
             office_or_company_id: None | int = None,
-            location_id: None | int = None,
-            disciplines: None | str = None,
+            location_id: None | list[int] = None,
+            disciplines: None | list[str] = None,
             levels: None | str = None,
             maturities: None | str = None,
             corporative: None | bool = None,
