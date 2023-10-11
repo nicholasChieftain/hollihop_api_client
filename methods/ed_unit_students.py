@@ -1,12 +1,12 @@
 from dataclasses import dataclass, field
-from datetime import date, datetime, time, timedelta
-from typing import TYPE_CHECKING, Any
+from datetime import datetime, time
+from typing import TYPE_CHECKING
 
 import phonenumbers
 from loguru import logger
 
 from hollihop_api_client.base import BaseCategory
-from hollihop_api_client.methods.ed_units import EdUnit
+from hollihop_api_client.models.requests import StudentRequest
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
 from tools import hide_phone_number
 
@@ -150,6 +150,21 @@ class StudentsCategory(BaseCategory):
 
     def __init__(self, api: 'AbstractAPI'):
         self.api = api
+
+    def get_students_by_class(
+            self, config_request: StudentRequest) -> list[Student]:
+        request_dict = config_request.dict()
+        data = dict_to_camel(request_dict)
+
+        response = self.api.request(
+            method='GetEdUnitStudents',
+            http_method='GET',
+            data=data
+        )
+
+        response = dict_to_snake(response)
+
+        return [Student(**_) for _ in Students(**response).ed_unit_students]
 
     def get_students(
             self,
