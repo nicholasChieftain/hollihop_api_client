@@ -3,10 +3,12 @@ from datetime import date, datetime, time, timedelta
 from typing import TYPE_CHECKING, Any
 
 import phonenumbers
+from loguru import logger
 
 from hollihop_api_client.base import BaseCategory
 from hollihop_api_client.methods.ed_units import EdUnit
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
+from tools import hide_phone_number
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI
@@ -73,11 +75,13 @@ class Payer:
             self.price_name = replace_spaces(self.price_name)
 
 
-def format_phone(number) -> str:
+def format_phone(number: str) -> str:
+    if (number[:2]) == "+8":
+        logger.warning(f"Неправильный формат номера: {hide_phone_number(number)}")
+        number = number[1:]
     return phonenumbers.format_number(
         phonenumbers.parse(number, 'RU'),
-        phonenumbers.PhoneNumberFormat.E164
-    )
+        phonenumbers.PhoneNumberFormat.E164)
 
 
 @dataclass
