@@ -159,6 +159,13 @@ class EdUnits:
     ed_units: list[EdUnit] = field(default_factory=list)
 
 
+def array_to_one_str(data: dict):
+    for key in data.keys():
+        if type(data[key]) == list:
+            data[key] = ",".join(data[key])
+    return data
+
+
 class EdUnitsCategory(BaseCategory):
 
     def __init__(self, api: 'AbstractAPI'):
@@ -184,7 +191,7 @@ class EdUnitsCategory(BaseCategory):
             query_teacher_prices: None | bool = None,
     ) -> list[EdUnit]:
         data = dict_to_camel(self.handle_parameters(locals()))
-
+        data = array_to_one_str(data)
         response = self.api.request(
             method='GetEdUnits',
             http_method='GET',
