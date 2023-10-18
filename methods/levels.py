@@ -36,7 +36,6 @@ class LevelsCategory(BaseCategory):
         )
 
         response = dict_to_snake(response)
-        print(1)
         return [Level(**_) for _ in Levels(**response).levels]
 
 
