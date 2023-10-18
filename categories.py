@@ -2,7 +2,8 @@ from typing import TYPE_CHECKING
 
 from hollihop_api_client.methods import (EdUnitsCategory, LeadsCategory,
                                          LocationsCategory, OfficesCategory,
-                                         StudentsCategory)
+                                         StudentsCategory, DisciplinesCategory,
+                                         LevelsCategory, LearningTypesCategory)
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI
@@ -31,6 +32,18 @@ class APICategories:
     @property
     def leads(self) -> LeadsCategory:
         return LeadsCategory(self.api)
+
+    @property
+    def disciplines(self) -> DisciplinesCategory:
+        return DisciplinesCategory(self.api)
+
+    @property
+    def levels(self) -> LevelsCategory:
+        return LevelsCategory(self.api)
+
+    @property
+    def learning_types(self) -> LearningTypesCategory:
+        return LearningTypesCategory(self.api)
 
 
 __all__ = ['APICategories']
