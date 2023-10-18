@@ -144,6 +144,14 @@ class EdUnit:
             self.teacher_prices = [TeacherPrice(
                 **_) for _ in self.teacher_prices]
 
+    def __eq__(self, other: object):
+        if not isinstance(other, EdUnit):
+            return NotImplemented
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
+
 
 @dataclass(frozen=True)
 class Statuses:
@@ -157,6 +165,13 @@ class Statuses:
 @dataclass
 class EdUnits:
     ed_units: list[EdUnit] = field(default_factory=list)
+
+
+def array_to_one_str(data: dict):
+    for key in data.keys():
+        if type(data[key]) == list:
+            data[key] = ",".join(data[key])
+    return data
 
 
 class EdUnitsCategory(BaseCategory):
@@ -181,23 +196,25 @@ class EdUnitsCategory(BaseCategory):
             self,
             id: None | int = None,
             types: None | str = None,
-            date_from: None | date = None,
-            date_to: None | date = None,
+
+            date_from: None | str = None,
+            date_to: None | str = None,
+
             statuses: None | str = None,
-            office_or_company_id: None | int = None,
+            office_or_company_id: None | str = None,
             location_id: None | list[int] = None,
             disciplines: None | list[str] = None,
-            levels: None | str = None,
+            levels: None | list[str] = None,
             maturities: None | str = None,
             corporative: None | bool = None,
-            learning_types: None | str = None,
+            learning_types: None | list[str] = None,
             teacher_id: None | int = None,
             query_days: None | bool = None,
             query_fiscal_info: None | bool = None,
             query_teacher_prices: None | bool = None,
     ) -> list[EdUnit]:
         data = dict_to_camel(self.handle_parameters(locals()))
-
+        data = array_to_one_str(data)
         response = self.api.request(
             method='GetEdUnits',
             http_method='GET',
