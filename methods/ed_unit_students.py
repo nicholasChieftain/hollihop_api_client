@@ -16,6 +16,15 @@ def replace_spaces(from_str: str):
     return from_str.replace('\xa0', ' ')
 
 
+class Phone():
+
+    def __init__(self, phone: str):
+        self.phone_number = phone
+
+    def __str__(self):
+        return hide_phone_number(self.phone_number)
+
+
 @dataclass
 class StudentAgent:
     first_name: None | str = None
