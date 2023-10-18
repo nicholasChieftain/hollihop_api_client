@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime, time
-from typing import TYPE_CHECKING, Any, List
+from typing import TYPE_CHECKING
 
 from hollihop_api_client.base import BaseCategory
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
@@ -144,6 +144,14 @@ class EdUnit:
             self.teacher_prices = [TeacherPrice(
                 **_) for _ in self.teacher_prices]
 
+    def __eq__(self, other: object):
+        if not isinstance(other, EdUnit):
+            return NotImplemented
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
+
 
 @dataclass(frozen=True)
 class Statuses:
@@ -175,16 +183,18 @@ class EdUnitsCategory(BaseCategory):
             self,
             id: None | int = None,
             types: None | str = None,
-            date_from: None | datetime = None,
-            date_to: None | datetime = None,
+
+            date_from: None | str = None,
+            date_to: None | str = None,
+
             statuses: None | str = None,
-            office_or_company_id: None | int = None,
-            location_id: None | int = None,
-            disciplines: None | str = None,
-            levels: None | str = None,
+            office_or_company_id: None | str = None,
+            location_id: None | list[int] = None,
+            disciplines: None | list[str] = None,
+            levels: None | list[str] = None,
             maturities: None | str = None,
             corporative: None | bool = None,
-            learning_types: None | str = None,
+            learning_types: None | list[str] = None,
             teacher_id: None | int = None,
             query_days: None | bool = None,
             query_fiscal_info: None | bool = None,
