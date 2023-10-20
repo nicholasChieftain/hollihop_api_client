@@ -172,7 +172,6 @@ class StudentsCategory(BaseCategory):
             query_days: None | bool = None
     ) -> list[Student]:
         data = dict_to_camel(self.handle_parameters(locals()))
-        print(data)
 
         response = self.api.request(
             method='GetEdUnitStudents',
