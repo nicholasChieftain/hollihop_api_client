@@ -7,7 +7,6 @@ from loguru import logger
 
 from hollihop_api_client.base import BaseCategory
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
-from tools import hide_phone_number
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI
@@ -23,7 +22,7 @@ class Phone():
         self.phone_number = phone
 
     def __str__(self):
-        return hide_phone_number(self.phone_number)
+        return f"{self.phone_number[:2]}xxxxxx{self.phone_number[-4:]}"
 
 
 @dataclass
@@ -173,7 +172,6 @@ class StudentsCategory(BaseCategory):
             query_days: None | bool = None
     ) -> list[Student]:
         data = dict_to_camel(self.handle_parameters(locals()))
-        print(data)
 
         response = self.api.request(
             method='GetEdUnitStudents',
