@@ -2,8 +2,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, time
 from typing import TYPE_CHECKING
 
+import logging
 import phonenumbers
-from loguru import logger
 
 from hollihop_api_client.base import BaseCategory
 from hollihop_api_client.tools import dict_to_camel, dict_to_snake
@@ -84,7 +84,7 @@ class Payer:
 
 def format_phone(number: str) -> Phone:
     if (number[:2]) == "+8":
-        logger.warning(f"Неправильный формат номера: {number}")
+        logging.warning(f"Неправильный формат номера: {number}")
         number = number[1:]
     return Phone(phonenumbers.format_number(
         phonenumbers.parse(number, 'RU'),
