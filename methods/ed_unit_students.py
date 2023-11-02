@@ -16,13 +16,10 @@ def replace_spaces(from_str: str):
     return from_str.replace('\xa0', ' ')
 
 
-class Phone():
-
-    def __init__(self, phone: str):
-        self.phone_number = phone
+class Phone(str):
 
     def __str__(self):
-        return f"{self.phone_number[:2]}xxxxxx{self.phone_number[-4:]}"
+        return f"{self[:2]}xxxxxx{self[-4:]}"
 
 
 @dataclass
