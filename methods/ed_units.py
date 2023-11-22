@@ -165,6 +165,7 @@ class Statuses:
 @dataclass
 class EdUnits:
     ed_units: list[EdUnit] = field(default_factory=list)
+    now: datetime = field(default_factory=datetime.fromtimestamp)
 
 
 def array_to_one_str(data: dict):
