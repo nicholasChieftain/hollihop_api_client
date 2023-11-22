@@ -1,7 +1,8 @@
-import phonenumbers
+import logging
 from functools import lru_cache
 from typing import Any
-import logging
+
+import phonenumbers
 
 keyword_tuple = ('False', 'await', 'else', 'import', 'pass',
                  'None', 'break', 'except', 'in', 'raise',
