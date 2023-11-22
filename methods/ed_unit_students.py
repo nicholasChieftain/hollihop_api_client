@@ -1,8 +1,8 @@
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime, time
 from typing import TYPE_CHECKING
 
-import logging
 import phonenumbers
 
 from hollihop_api_client.base import BaseCategory
@@ -16,13 +16,9 @@ def replace_spaces(from_str: str):
     return from_str.replace('\xa0', ' ')
 
 
-class Phone():
-
-    def __init__(self, phone: str):
-        self.phone_number = phone
-
+class Phone(str):
     def __str__(self):
-        return f"{self.phone_number[:2]}xxxxxx{self.phone_number[-4:]}"
+        return f"{self[:2]}xxxxxx{self[-4:]}"
 
 
 @dataclass
@@ -203,6 +199,10 @@ class StudentsCategory(BaseCategory):
             ed_unit_id=ed_unit_id,
             query_payers=True,
             **kwargs
+        )
+
+        students = filter(
+            lambda student: student.payers[-1].debt_date != None, students
         )
 
         if date_from:
