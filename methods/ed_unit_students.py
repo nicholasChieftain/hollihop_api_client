@@ -17,6 +17,9 @@ def replace_spaces(from_str: str):
 
 
 class Phone(str):
+    def __repr__(self):
+        return self.replace("'", "", 2)
+
     def __str__(self):
         return f"{self[:2]}xxxxxx{self[-4:]}"
 
@@ -45,7 +48,7 @@ class Payer:
     is_company: bool | None = None
     name: str | None = None
     actual: bool | None = None
-    terminated_contracts: list = None
+    terminated_contracts: list | None = None
     price_id: int | None = None
     price_name: str | None = None
     discounts: list | None = None
