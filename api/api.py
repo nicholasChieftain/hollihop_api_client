@@ -1,6 +1,6 @@
-from typing import NoReturn, TYPE_CHECKING
+from typing import TYPE_CHECKING, NoReturn
 
-from requests import Response, Session, get
+from requests import Response, Session
 
 from .abc import AbstractAPI
 
@@ -60,7 +60,7 @@ class HolliHopAPI(AbstractAPI):
             method: str,
             http_method: str = 'GET',
             data: dict | None = None
-    ) -> None | dict:
+    ) -> dict:
         url = self._domain + self.__api_version__ + method
         data.update({'authkey': self._api_key})
         with Session() as session:
@@ -77,7 +77,7 @@ class HolliHopAPI(AbstractAPI):
     def _validate_response(
             self,
             response: Response,
-    ) -> (None | dict) | NoReturn:
+    ) -> dict | NoReturn:
         if response.status_code == 200:
             return response.json()
         else:
