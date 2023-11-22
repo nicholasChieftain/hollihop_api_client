@@ -1,9 +1,9 @@
 from typing import TYPE_CHECKING
 
-from hollihop_api_client.methods import (EdUnitsCategory, LeadsCategory,
-                                         LocationsCategory, OfficesCategory,
-                                         StudentsCategory, DisciplinesCategory,
-                                         LevelsCategory, LearningTypesCategory)
+from hollihop_api_client.methods import (DisciplinesCategory, EdUnitsCategory,
+                                         LeadsCategory, LearningTypesCategory,
+                                         LevelsCategory, LocationsCategory,
+                                         OfficesCategory, StudentsCategory)
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI

@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 from hollihop_api_client.base import BaseCategory
-from hollihop_api_client.tools import dict_to_camel, dict_to_snake, format_phone
-
+from hollihop_api_client.tools import (dict_to_camel, dict_to_snake,
+                                       format_phone)
 
 if TYPE_CHECKING:
     from hollihop_api_client.api import AbstractAPI
