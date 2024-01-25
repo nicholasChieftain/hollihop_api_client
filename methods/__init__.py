@@ -6,8 +6,9 @@ from .learning_types import LearningTypesCategory
 from .levels import LevelsCategory
 from .locations import LocationsCategory
 from .offices import OfficesCategory
+from .clients import Clients
 
 __all__ = ['StudentsCategory', 'EdUnitsCategory',
            'LeadsCategory', 'LocationsCategory', 'OfficesCategory',
            'DisciplinesCategory', 'LevelsCategory',
-           'LearningTypesCategory']
+           'LearningTypesCategory', 'Clients']

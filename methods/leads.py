@@ -86,17 +86,69 @@ class Leads:
     now: None | datetime = None
 
 
+@dataclass
+class AddLeadResponse:
+    lead_id: int | None = None
+
+
+@dataclass
+class AddLeadsResponse:
+    leads: list[AddLeadResponse] | None = None
+
+
 class LeadsCategory(BaseCategory):
 
     def __init__(self, api: 'AbstractAPI'):
         self.api = api
+
+    def add_lead(
+            self,
+            first_name: str | None = None,
+            middle_name: str | None = None,
+            last_name: str | None = None,
+            gender: bool | None = True,
+            birthday: datetime | None = None,
+            status: str | None = None,
+            office_or_company_id: int | None = None,
+            comment: str | None = None,
+            ad_source: str | None = None,
+    ):
+        data = dict_to_camel(self.handle_parameters(locals()))
+        response = self.api.request(
+            method='AddLead',
+            http_method='POST',
+            data=data
+        )
+
+        lead = AddLeadResponse(**dict_to_snake(response))
+        print(lead)
+
+        return lead
+
+    def edit_contacts(
+            self,
+            lead_id: int | None = None,
+            mobile: str | None = None,
+            use_mobile_by_system: bool | None = True,
+            use_email_by_system: bool | None = True,
+            email: str | None = None
+    ):
+        data = dict_to_camel(self.handle_parameters(locals()))
+        response = self.api.request(
+            method='EditContacts',
+            http_method='POST',
+            data=data
+        )
+
+        return response
 
     def get_leads(
             self,
             id: None | int = None,
             attached: None | bool = None,
             student_client_id: None | int = None,
-            office_or_company_id: int | None = None
+            office_or_company_id: int | None = None,
+            created_from: datetime | None = None
     ) -> list[Lead]:
         data = dict_to_camel(self.handle_parameters(locals()))
 
