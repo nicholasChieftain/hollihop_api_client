@@ -22,6 +22,24 @@ class Phone(str):
 
     def __str__(self):
         return f"{self[:2]}xxxxxx{self[-4:]}"
+    
+@dataclass
+class Day:
+    date: None | datetime = None
+    minutes: None | float = None
+    pass_: None | bool = field(init=False)
+    Pass: None | bool = None
+    student_payable_minutes: None | float = None
+    teacher_payable_minutes: None | float = None
+    description: str | None = None
+    accepted: str | None = None
+    accepted_description: bool | None = None
+
+    def __post_init__(self):
+        if not self.date is None:
+            self.date = datetime.fromisoformat(self.date)
+        self.pass_ = self.Pass
+        del self.Pass
 
 
 @dataclass
@@ -117,7 +135,7 @@ class Student:
     status: str | None = None
     study_minutes: int | None = None
     study_units: str | None = None
-    days: list | None = None
+    days: list[Day] | None = None
     payers: list[Payer] | None = None
     phones: list[Phone] = field(init=False)
 
@@ -142,6 +160,8 @@ class Student:
             self.begin_date = datetime.fromisoformat(self.begin_date)
         if self.end_date:
             self.end_date = datetime.fromisoformat(self.end_date)
+        if not self.days is None:
+            self.days = [Day(**_) for _ in self.days]
 
     # def __repr__(self) -> str:
     #     return self.student_name

@@ -121,7 +121,6 @@ class LeadsCategory(BaseCategory):
         )
 
         lead = AddLeadResponse(**dict_to_snake(response))
-        print(lead)
 
         return lead
 
@@ -134,6 +133,7 @@ class LeadsCategory(BaseCategory):
             email: str | None = None
     ):
         data = dict_to_camel(self.handle_parameters(locals()))
+        
         response = self.api.request(
             method='EditContacts',
             http_method='POST',
