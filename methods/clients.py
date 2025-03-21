@@ -130,6 +130,7 @@ class Clients(BaseCategory):
             id: int | None = None, 
             ed_unit_office_or_company_id: int | None = None,
             term: str | None = None,
+            statuses: str | None = None,
             by_agents: bool | None = False 
     ) -> Students:
         data = dict_to_camel(self.handle_parameters(locals()))
